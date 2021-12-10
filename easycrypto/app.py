@@ -62,7 +62,6 @@ coinselect = pd.DataFrame({'Coin':['BTC-USD','ETH-USD'],
                           })
 
 #las opciones del selector de intervalos en el dashboard.
-#intervalselect = [1, 5, 15, 30]
 intervalselect = pd.DataFrame({'selector':["1 minuto", "5 minutos", "15 minutos", "30 minutos","1 hora","1 día"], 'intervalo':[1, 5, 15, 30,60, 1440]})
 
 #Definimos la función que nos servirá para realizar la query a la API.
@@ -78,8 +77,6 @@ for coin in coinselect['Pair']:
     for interv in intervalselect['intervalo']:
 
         nq = pd.DataFrame(kquery(coin,interv, start_time))
-        # newquery, last = k.get_ohlc_data(coin, interv, since=start_time, ascending=True)
-        # nq = pd.DataFrame(newquery)
         nq['time'] = nq.index
         nq.reset_index(drop=True, inplace=True)
         nq['coin'] = coin
@@ -130,7 +127,8 @@ inter_sel = st.sidebar.selectbox(
     intervalselect['selector'])
 
 #Esta línea nos permite filtrar el dashboard por moneda e intervalo en base a los selectores de streamlit.
-df_filtered = df.loc[(df["interval"] == intervalselect.loc[intervalselect['selector']==inter_sel, 'intervalo'].iloc[0])&(df["coin"] == coinselect.loc[coinselect['Coin']== coin_sel, 'Pair'].iloc[0])]
+df_filtered = df.loc[(df["interval"] == intervalselect.loc[intervalselect['selector']==inter_sel,'intervalo'].iloc[0])&
+                     (df["coin"] == coinselect.loc[coinselect['Coin']== coin_sel, 'Pair'].iloc[0])]
 
 
 
